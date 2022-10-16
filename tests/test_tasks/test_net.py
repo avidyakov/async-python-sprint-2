@@ -1,8 +1,6 @@
 from datetime import date
 
 import pytest
-from mimesis import Generic
-from mimesis.enums import Locale
 
 from tasks.net import ChurchCalendar, Response
 
@@ -11,10 +9,6 @@ class TestChurchCalendar:
     @pytest.fixture
     def calendar(self) -> ChurchCalendar:
         return ChurchCalendar()
-
-    @pytest.fixture
-    def data_provider(self) -> Generic:
-        return Generic(locale=Locale.RU)
 
     def test_run(self):
         calendar = ChurchCalendar(
