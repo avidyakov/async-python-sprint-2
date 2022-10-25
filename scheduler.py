@@ -1,6 +1,6 @@
-from datetime import datetime
+from loguru import logger
 
-from exceptions import PoolSizeError
+from errors import PoolSizeError
 from job import Job
 from settings import settings
 
@@ -25,11 +25,9 @@ class Scheduler:
             self._run_job(job)
 
     def _run_job(self, job):
-        if job.start_at is None or datetime.now() >= job.start_at:
-            job.set_start_time()
-
-        if job.get_start_time():
-            try:
-                next(job.get_gen())
-            except StopIteration:
-                self._jobs.remove(job)
+        try:
+            result = next(job.run())
+            logger.info(f'Job {job} result: {result}')
+        except StopIteration:
+            self._jobs.remove(job)
+            logger.info(f'Job {job} finished')

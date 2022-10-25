@@ -1,0 +1,2 @@
+class PoolSizeError(Exception):
+    pass
