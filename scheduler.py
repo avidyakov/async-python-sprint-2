@@ -14,6 +14,7 @@ class Scheduler:
 
     def schedule(self, job: Job) -> NoReturn:
         if len(self._jobs) >= self._pool_size:
+            logger.error(f'Pool size exceeded: {self._pool_size}')
             raise PoolSizeError(f'Maximum pool size {len(self._jobs)} tasks')
 
         self._jobs.append(job)
