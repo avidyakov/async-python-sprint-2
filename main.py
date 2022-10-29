@@ -1,6 +1,7 @@
 """В README.md указана инструкция по запуску проекта"""
 
 from datetime import date
+from typing import NoReturn
 
 from job import Job
 from scheduler import Scheduler
@@ -13,7 +14,7 @@ DATES = [
 ]
 
 
-def main():
+def main() -> NoReturn:
     gen = church_calendar(DATES)
     job1 = Job(gen)
     scheduler = Scheduler()

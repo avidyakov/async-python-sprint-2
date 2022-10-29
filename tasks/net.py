@@ -4,6 +4,7 @@
 """
 from datetime import date
 from operator import attrgetter
+from typing import Iterator
 
 import requests
 from pydantic import BaseModel
@@ -20,14 +21,14 @@ class Response(BaseModel):
     celebrations: list[CelebrateResponse]
 
 
-def church_calendar(dates: list[date]):
+def church_calendar(dates: list[date]) -> Iterator[str]:
     for date_ in dates:
         url = _get_url(date_)
         response = _get_response(url)
         yield _format_response(response)
 
 
-def _get_url(date_: date):
+def _get_url(date_: date) -> str:
     return (
         f'http://calapi.inadiutorium.cz/api/v0/'
         f'{settings.default_lang}/calendars/default/'
@@ -35,7 +36,7 @@ def _get_url(date_: date):
     )
 
 
-def _get_response(url) -> Response:
+def _get_response(url: str) -> Response:
     response = requests.get(url)
     json_response = response.json()
     return Response(**json_response)

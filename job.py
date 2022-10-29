@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Generator
+from typing import Any, Generator, Iterator
 
 import backoff
 from loguru import logger
@@ -22,7 +22,7 @@ class Job:
         self._dependencies = dependencies or []
         self._start_time = None
 
-    def run(self):
+    def run(self) -> Iterator[Any]:
         while self._dependencies:
             yield from self._run_dependencies()
 
@@ -35,14 +35,14 @@ class Job:
 
         yield from self._run()
 
-    def _run_dependencies(self):
+    def _run_dependencies(self) -> Iterator[Any]:
         for job in self._dependencies:
             try:
-                next(job.run())
+                yield next(job.run())
             except StopIteration:
                 self._dependencies.remove(job)
 
-    def _run(self):
+    def _run(self) -> Iterator[Any]:
         @backoff.on_exception(
             backoff.expo,
             Exception,
@@ -60,7 +60,7 @@ class Job:
 
         return inner()
 
-    def _has_expired(self):
+    def _has_expired(self) -> bool:
         return (
             self._max_working_time
             and datetime.now() - self._start_time > self._max_working_time
