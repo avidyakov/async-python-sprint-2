@@ -1,3 +1,5 @@
+"""В README.md указана инструкция по запуску проекта"""
+
 from datetime import date
 
 from job import Job

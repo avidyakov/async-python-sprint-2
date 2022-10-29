@@ -2,6 +2,22 @@
 
 Спроектировать и реализовать планировщик задач для выполнения поступающих задач.
 
+## Installation
+
+Use the package manager [poetry](https://python-poetry.org/docs/) to install project.
+
+```bash
+poetry install
+```
+
+## Usage
+
+```bash
+poetry sheel
+python main.py
+```
+
+
 ## Описание задания
 
 **1. Описать реализацию класса `Scheduler`.**
